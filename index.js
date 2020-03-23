@@ -1,7 +1,11 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 
 // Set up API server
 const app = express();
+
+app.use(express.json());
+app.use(bodyParser.raw({type: '*/xml'}));
 
 app.use('/api/emissies', require('./routes/api/emissies'));
 
