@@ -3,7 +3,6 @@ const router = express.Router();
 const mysql = require('mysql');
 
 const utils = require('./../../utils');
-const index = require('./../../index');
 
 const resource = 'emissies';
 const innerElement = 'emissie';
@@ -36,7 +35,7 @@ router.get('/', function(req, res) {
 				res,
 				200,
 				contentType,
-				utils.wrapXML(results, resource)
+				utils.wrapXML(results, resource, innerElement)
 			);
 		}
 	});
