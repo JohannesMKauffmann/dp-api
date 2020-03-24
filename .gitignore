@@ -107,7 +107,7 @@ dist
 #-----------------------------------------------------------------
 data/
 
-schema/xml/tempdata/
-schema/json/tempdata/
+schemas/xml/tempdata/
+schemas/json/tempdata/
 
 *.code-workspace
