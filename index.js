@@ -1,11 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 // Set up API server
-const app = express();
+var app = express();
 
-app.use(express.json());
-app.use(bodyParser.raw({type: '*/xml'}));
+const xsdpath = path.join(__dirname, '/schemas/xml/')
+const schemapath = path.join(__dirname, '/schemas/json/')
+app.use('/schemas/xml', express.static(xsdpath));
+app.use('/schemas/json', express.static(schemapath));
+
+app.use(bodyParser.text({type: '*/*'}));
 
 app.use('/api/emissies', require('./routes/api/emissies'));
 

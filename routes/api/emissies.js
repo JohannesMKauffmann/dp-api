@@ -9,13 +9,8 @@ const innerElement = 'emissie';
 
 // Get all data
 router.get('/', function(req, res) {
-	const contentType = utils.getContentType(req.headers.accept);
+	var contentType = utils.checkAcceptHeader(req.headers.accept, res);
 	if (contentType === null) {
-		utils.sendResponse(
-			res,
-			400,
-			contentType,
-			utils.getMessage(contentType, 'Please a include proper Accept header!'))
 		return;
 	}
 	// execute query and send response
@@ -24,33 +19,23 @@ router.get('/', function(req, res) {
 		if (err) {
 			throw err;
 		}
-		if (contentType) {
-			utils.sendResponse(
-				res,
-				200,
-				contentType,
-				utils.wrapJSON(results, resource)
-			);
-		} else {
-			utils.sendResponse(
-				res,
-				200,
-				contentType,
-				utils.wrapXML(results, resource, innerElement)
-			);
-		}
+		const schemapath = utils.getSchemaPath(contentType, resource);
+		const type = utils.getContentTypeString(contentType, true);
+		const link = utils.formatLink(schemapath, 'schema', type);
+		utils.sendResponseWithLink(
+			res,
+			200,
+			link,
+			contentType,
+			utils.wrapData(contentType, results, resource, innerElement, true)
+		);
 	});
 });
 
 // Get data for a single bron and periode
 router.get('/:bron/:periode', function(req, res) {
-	const contentType = utils.getContentType(req.headers.accept);
+	const contentType = utils.checkAcceptHeader(req.headers.accept, res);
 	if (contentType === null) {
-		utils.sendResponse(
-			res,
-			400,
-			contentType,
-			utils.getMessage(contentType, 'Please a include proper Accept header!'))
 		return;
 	}
 	// build query
@@ -64,41 +49,46 @@ router.get('/:bron/:periode', function(req, res) {
 		}
 		if (!results.length) {
 			utils.sendResponse(res, 404);
-		} else {
-			if (contentType) {
-				utils.sendResponse(
-					res,
-					200,
-					contentType,
-					utils.wrapJSON(results, resource)
-				);
-			} else if (!contentType) {
-				utils.sendResponse(
-					res,
-					200,
-					contentType,
-					utils.wrapXML(results, resource)
-				);
-			}
+			return;
 		}
+		const schemapath = utils.getSchemaPath(contentType, innerElement);
+		const type = utils.getContentTypeString(contentType, true);
+		const link = utils.formatLink(schemapath, 'schema', type);
+		utils.sendResponseWithLink(
+			res,
+			200, 
+			link,
+			contentType,
+			utils.wrapData(contentType, results, resource, innerElement, false)
+		);
 	});
 });
 
 router.post('/', function(req, res) {
-	const contentType = utils.getContentType(req.headers.accept);
+	// check request accept headers
+	const acceptHeader = utils.checkAcceptHeader(req.headers.accept, res);
+	if (acceptHeader === null) {
+		return;
+	}
+	// check content type
+	const contentType = utils.checkContentType(req.headers['content-type'], res, acceptHeader);
 	if (contentType === null) {
-		utils.sendResponse(res, 400);
 		return;
 	}
 	var data = req.body;
+	// convert string body to a format we can use
+	data = utils.parseData(acceptHeader, contentType, res, data);
+	if (!data) {
+		return;
+	}
 	// validate incoming data
-	data = utils.validateData(contentType, resource, data, res);
+	data = utils.validateData(acceptHeader, contentType, innerElement, data, res);
 	if (!data) {
 		return;
 	}
 	if (!contentType) {
-		// convert xml string to usable JSON data
-		data = utils.convertxml2json(data, resource);
+		// convert xml data to usable JSON data
+		data = utils.convertxml2json(data, innerElement);
 	}
 	// build query
 	let sql = `
@@ -106,65 +96,74 @@ router.post('/', function(req, res) {
 		VALUES (?, ?, ?, ?);
 	`;
 	var inserts = [
-		data.emissies[0].bron, 
-		data.emissies[0].periode,
-		data.emissies[0].nox,
-		data.emissies[0].co2
+		data.bron,
+		data.periode,
+		data.nox,
+		data.co2
 	];
 	sql = mysql.format(sql, inserts);
 	// execute query and send proper response
 	utils.db.query(sql, function(err, results) {
 		if (err && err.code === 'ER_DUP_ENTRY') {
 			message = utils.getMessage(
-				contentType,
-				"No duplicate entries for bron and periode are allowed!"
+				acceptHeader,
+				'There already exists an entry for the given bron and periode!'
 			);
-			utils.sendResponse(res, 403, contentType, message);
+			// request couldn't be completed due to a conflict with the current state of resource.
+			utils.sendResponseWithBody(res, 409, acceptHeader, message);
 			return;
 		}
-		message = utils.getMessage(contentType, "Succesfully created resource");
-		utils.sendResponse(
-			res,
-			201,
-			contentType,
-			message,
-			`/api/${resource}/${data.emissies[0].bron}/${data.emissies[0].periode}`
-		);
+		const resourcePath = utils.getResourcePath(resource, [data.bron, data.periode]);
+		utils.sendResponseWithLocation(res, 201, resourcePath);
 	});
 });
 
 router.put('/', function(req, res) {
-	const contentType = utils.getContentType(req.headers.accept);
-	utils.sendResponse(
+	const acceptHeader = utils.checkAcceptHeader(req.headers.accept, res);
+	if (acceptHeader === null) {
+		return;
+	}
+	utils.sendResponseWithBody(
 		res,
 		400,
-		contentType,
-		utils.getMessage(contentType, `Please PUT at /${resource}/bron/periode`)
+		acceptHeader,
+		utils.getMessage(acceptHeader, `Please PUT at /${resource}{/bron}{/periode}`)
 	);
 });
 
 router.put('/:bron/:periode', function(req, res) {
-	const contentType = utils.getContentType(req.headers.accept);
+	// check request accept headers
+	const acceptHeader = utils.checkAcceptHeader(req.headers.accept, res);
+	if (acceptHeader === null) {
+		return;
+	}
+	// check content type
+	const contentType = utils.checkContentType(req.headers['content-type'], res, acceptHeader);
 	if (contentType === null) {
-		utils.sendResponse(res, 400);
 		return;
 	}
 	var data = req.body;
+	// convert string body to a format we can use
+	data = utils.parseData(acceptHeader, contentType, res, data);
+	if (!data) {
+		return;
+	}
 	// validate incoming data
-	data = utils.validateData(contentType, resource, data, res, req.params);
+	data = utils.validateData(acceptHeader, contentType, innerElement, data, res, req.params);
 	if (!data) {
 		return;
 	}
 	if (!contentType) {
-		// convert xml string to usable JSON data
-		data = utils.convertxml2json(data, resource);
+		// convert xml data to usable JSON data
+		data = utils.convertxml2json(data, innerElement);
 	}
 	// query DB to checkk wether to insert or update
 	let sql = `SELECT bron, periode FROM ${resource} WHERE bron = ? AND periode = ?`;
 	var inserts = [
-		data.emissies[0].bron,
-		data.emissies[0].periode
+		data.bron,
+		data.periode
 	];
+	const resourcePath = utils.getResourcePath(resource, [data.bron, data.periode]);
 	sql = mysql.format(sql, inserts);
 	utils.db.query(sql, function(err, results) {
 		if (err) {
@@ -174,48 +173,34 @@ router.put('/:bron/:periode', function(req, res) {
 			// there is already a row, which we now need to replace entirely
 			sql = `UPDATE ${resource} SET nox = ?, co2 = ? WHERE bron = ? AND periode = ?`;
 			inserts = [
-				data.emissies[0].nox,
-				data.emissies[0].co2,
-				data.emissies[0].bron,
-				data.emissies[0].periode
+				data.nox,
+				data.co2,
+				data.bron,
+				data.periode
 			];
 			sql = mysql.format(sql, inserts);
 			utils.db.query(sql, function(err, results) {
 				if (err) {
 					throw err;
 				}
-				const message = utils.getMessage(contentType, "Succesfully updated resource");
-				utils.sendResponse(
-					res,
-					200,
-					contentType,
-					message,
-					`/api/${resource}/${data.emissies[0].bron}/${data.emissies[0].periode}`
-				);
+				utils.sendResponseWithLocation(res, 204, resourcePath);
 			});
-		} else {
-			// there is no existing row, so we need to insert one
-			sql = `
-				INSERT INTO ${resource} (bron, periode, nox, co2) \
-				VALUES (?, ?, ?, ?);
-			`;
-			inserts[2] = data.emissies[0].nox;
-			inserts[3] = data.emissies[0].co2;
-			sql = mysql.format(sql, inserts);
-			utils.db.query(sql, function(err, results) {
-				if (err) {
-					throw err;
-				}
-				const message = utils.getMessage(contentType, "Succesfully created resource");
-				utils.sendResponse(
-					res,
-					201,
-					contentType,
-					message,
-					`/api/${resource}/${data.emissies[0].bron}/${data.emissies[0].periode}`
-				);
-			});
+			return;
 		}
+		// there is no existing row, so we need to insert one
+		sql = `
+			INSERT INTO ${resource} (bron, periode, nox, co2) \
+			VALUES (?, ?, ?, ?);
+		`;
+		inserts[2] = data.nox;
+		inserts[3] = data.co2;
+		sql = mysql.format(sql, inserts);
+		utils.db.query(sql, function(err, results) {
+			if (err) {
+				throw err;
+			}
+			utils.sendResponseWithLocation(res, 201, resourcePath);
+		});
 	});
 });
 

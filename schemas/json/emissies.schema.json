@@ -4,9 +4,7 @@
 	"title": "Emissies JSON schema",
 	"description": "JSON data validation schema to describe emission data",
 	"type": "object",
-	"required": [
-		"emissies"
-	],
+	"required": [ "emissies" ],
 	"properties": {
 		"emissies": {
 			"type": "array",
