@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+<xsd:element name="pompprijzen">
+	<xsd:complexType>
+		<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="pompprijs">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="periode">
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:integer">
+									<xsd:minInclusive value="2010" />
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:element>
+						<xsd:element name="euro95">
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:decimal">
+									<xsd:fractionDigits value="3" />
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:element>
+						<xsd:element name="diesel">
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:decimal">
+									<xsd:fractionDigits value="3" />
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:element>
+						<xsd:element name="lpg">
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:decimal">
+									<xsd:fractionDigits value="3" />
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:element>
+
+</xsd:schema>

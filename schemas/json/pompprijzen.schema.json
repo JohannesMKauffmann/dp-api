@@ -2,35 +2,31 @@
 	"$schema": "http://json-schema.org/draft-07/schema",
 	"$id": "http://example.com/example.json",
 	"title": "Emissies JSON schema",
-	"description": "JSON data validation schema to describe emission data",
+	"description": "JSON data validation schema to describe fuel station prices",
 	"type": "object",
-	"required": [ "emissies" ],
+	"required": [ "pompprijzen" ],
 	"properties": {
 		"emissies": {
 			"type": "array",
 			"items": {
 				"type": "object",
-				"required": [ "bron", "periode", "nox", "co2" ],
+				"required": [ "periode", "euro95", "diesel", "lpg" ],
 				"properties": {
-					"bron": {
-						"type": "string",
-						"enum": [
-							"wegverkeer",
-							"benzine",
-							"diesel",
-							"lpg"
-						]
-					},
 					"periode": {
 						"type": "integer",
 						"minimum": 2010
 					},
-					"nox": {
+					"euro95": {
 						"type": "number",
-						"divisibleBy": 0.01
+						"divisibleBy": 0.001
 					},
-					"co2": {
-						"type": "integer"
+					"diesel": {
+						"type": "number",
+						"divisibleBy": 0.001
+					},
+					"lpg": {
+						"type": "number",
+						"divisibleBy": 0.001
 					}
 				}
 			}

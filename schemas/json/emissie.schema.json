@@ -21,7 +21,7 @@
 		},
 		"nox": {
 			"type": "number",
-			"multipleOf": 0.01
+			"divisibleBy": 0.01
 		},
 		"co2": {
 			"type": "integer"
