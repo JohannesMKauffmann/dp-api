@@ -13,6 +13,7 @@ app.use('/schemas/json', express.static(schemapath));
 app.use(bodyParser.text({type: '*/*'}));
 
 app.use('/api/emissies', require('./routes/api/emissies'));
+app.use('/api/pompprijzen', require('./routes/api/pompprijzen'));
 
 const PORT = 4002;
 

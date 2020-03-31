@@ -17,7 +17,7 @@ router.get('/', function(req, res) {
 	let sql = `SELECT * FROM ${resource};`;
 	utils.db.query(sql, function(err, results) {
 		if (err) {
-			throw err;
+			console.log(err);
 		}
 		const schemapath = utils.getSchemaPath(contentType, resource);
 		const type = utils.getContentTypeString(contentType, true);
@@ -45,7 +45,7 @@ router.get('/:bron/:periode', function(req, res) {
 	// execute query and send proper response
 	utils.db.query(sql, function(err, results) {
 		if (err) {
-			throw err;
+			console.log(err);
 		}
 		if (!results.length) {
 			utils.sendResponse(res, 404);
@@ -167,7 +167,7 @@ router.put('/:bron/:periode', function(req, res) {
 	sql = mysql.format(sql, inserts);
 	utils.db.query(sql, function(err, results) {
 		if (err) {
-			throw err;
+			console.log(err);
 		}
 		if (Object.keys(results).length) {
 			// there is already a row, which we now need to replace entirely
@@ -181,7 +181,7 @@ router.put('/:bron/:periode', function(req, res) {
 			sql = mysql.format(sql, inserts);
 			utils.db.query(sql, function(err, results) {
 				if (err) {
-					throw err;
+					console.log(err);
 				}
 				utils.sendResponseWithLocation(res, 204, resourcePath);
 			});
@@ -197,10 +197,30 @@ router.put('/:bron/:periode', function(req, res) {
 		sql = mysql.format(sql, inserts);
 		utils.db.query(sql, function(err, results) {
 			if (err) {
-				throw err;
+				console.log(err);
 			}
 			utils.sendResponseWithLocation(res, 201, resourcePath);
 		});
+	});
+});
+
+router.delete('/:bron/:periode', function(req, res) {
+	// Accept headers or Content-Type headers don't matter, since we only send a 204 on succesful deletion
+	// or a 404 if the requested resource for deletion was not found
+	var bron = req.params.bron;
+	var periode = req.params.periode;
+	let sql = `DELETE from ${resource} WHERE bron = ? AND periode = ?;`;
+	var inserts = [ bron, periode];
+	sql = mysql.format(sql, inserts);
+	utils.db.query(sql, function(err, results) {
+		if (err) {
+			console.log(err);
+		}
+		if (!results.affectedRows) {
+			utils.sendResponse(res, 404);
+			return;
+		}
+		utils.sendResponse(res, 204);
 	});
 });
 

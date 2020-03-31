@@ -85,9 +85,9 @@ function wrapJSON(arr, resource, innerElement) {
 	if (resource === undefined) {
 		// wrap single data entry
 		resource = innerElement;
-		var jsondata = {[resource]: {}};
+		var jsondata = {};
 		var fromDB = JSON.parse(JSON.stringify(arr));
-		jsondata[resource] = fromDB[0];
+		jsondata = fromDB[0];
 	} else {
 		// wrap every entry from the DB
 		var jsondata = {[resource]: []};
