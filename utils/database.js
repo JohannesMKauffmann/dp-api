@@ -12,7 +12,7 @@ conn.connect(function(err) {
 	if (err) {
 		throw err;
 	}
-	console.log("Connected")
+	console.log("Connected to MySQL database on port 3306")
 });
 
 function prepareQuery(sql, inserts) {
