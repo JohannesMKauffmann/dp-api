@@ -14,6 +14,7 @@ app.use(bodyParser.text({type: '*/*'}));
 
 app.use('/api/emissies', require('./routes/api/emissies'));
 app.use('/api/pompprijzen', require('./routes/api/pompprijzen'));
+app.use('/api/brandstofafzet', require('./routes/api/brandstofafzet'));
 
 const PORT = 4002;
 

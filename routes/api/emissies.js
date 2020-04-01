@@ -29,6 +29,7 @@ router.get('/', function(req, res) {
 			contentType,
 			utils.wrapData(contentType, results, resource, innerElement, true)
 		);
+		return;
 	});
 });
 
@@ -61,6 +62,7 @@ router.get('/:bron/:jaar', function(req, res) {
 			contentType,
 			utils.wrapData(contentType, results, resource, innerElement, false)
 		);
+		return;
 	});
 });
 
@@ -115,6 +117,7 @@ router.post('/', function(req, res) {
 		}
 		const resourcePath = utils.getResourcePath(resource, [data.bron, data.jaar]);
 		utils.sendResponseWithLocation(res, 201, resourcePath);
+		return;
 	});
 });
 

@@ -299,7 +299,7 @@ function sendResponseWithBody(res, status, contentType, message) {
 
 // Sends a response with a location, without body
 function sendResponseWithLocation(res, status, location) {
-	res.status(status).location(location).end();
+	res.status(status).set('Location', location).end();
 }
 
 // Sends a response with a link relation and body

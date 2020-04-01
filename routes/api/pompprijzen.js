@@ -29,6 +29,7 @@ router.get('/', function(req, res) {
 			contentType,
 			utils.wrapData(contentType, results, resource, innerElement, true)
 		);
+		return;
 	});
 });
 
@@ -61,6 +62,7 @@ router.get('/:jaar', function(req, res) {
 			contentType,
 			utils.wrapData(contentType, results, resource, innerElement, false)
 		);
+		return;
 	});
 });
 
@@ -115,6 +117,7 @@ router.post('/', function(req, res) {
 		}
 		const resourcePath = utils.getResourcePath(resource, [data.jaar]);
 		utils.sendResponseWithLocation(res, 201, resourcePath);
+		return;
 	});
 });
 
@@ -181,8 +184,8 @@ router.put('/:jaar', function(req, res) {
 					console.log(err);
 				}
 				utils.sendResponseWithLocation(res, 204, resourcePath);
+				return;
 			});
-			return;
 		}
 		// there is no existing row, so we need to insert one
 		sql = `
@@ -198,6 +201,7 @@ router.put('/:jaar', function(req, res) {
 				console.log(err);
 			}
 			utils.sendResponseWithLocation(res, 201, resourcePath);
+			return;
 		});
 	});
 });
@@ -218,6 +222,7 @@ router.delete('/:jaar', function(req, res) {
 			return;
 		}
 		utils.sendResponse(res, 204);
+		return;
 	});
 });
 
