@@ -1,6 +1,5 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema",
-	"$id": "http://example.com/example.json",
 	"title": "Emission JSON schema",
 	"description": "JSON data validation schema to describe emission data. All emission data is in million kilograms",
 	"type": "object",

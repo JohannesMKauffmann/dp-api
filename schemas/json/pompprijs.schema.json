@@ -1,6 +1,5 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema",
-	"$id": "http://example.com/example.json",
 	"title": "Fuel station prices JSON schema",
 	"description": "JSON data validation schema to describe fuel station prices for a given year. All prices are in euro/liter.",
 	"type": "object",

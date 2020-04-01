@@ -107,7 +107,7 @@ router.post('/', function(req, res) {
 		if (err && err.code === 'ER_DUP_ENTRY') {
 			message = utils.getMessage(
 				acceptHeader,
-				'There already exists an entry for the given jaar!'
+				'There already exists an entry for the given year!'
 			);
 			// request couldn't be completed due to a conflict with the current state of resource.
 			utils.sendResponseWithBody(res, 409, acceptHeader, message);
