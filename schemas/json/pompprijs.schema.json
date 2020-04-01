@@ -1,12 +1,12 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema",
 	"$id": "http://example.com/example.json",
-	"title": "Emissies JSON schema",
-	"description": "JSON data validation schema to describe fuel station prices data for a given periode",
+	"title": "Fuel station prices JSON schema",
+	"description": "JSON data validation schema to describe fuel station prices for a given year. All prices are in euro/liter.",
 	"type": "object",
-	"required": [ "periode", "euro95", "diesel", "lpg" ],
+	"required": [ "jaar", "euro95", "diesel", "lpg" ],
 	"properties": {
-		"periode": {
+		"jaar": {
 			"type": "integer",
 			"minimum": 2010
 		},

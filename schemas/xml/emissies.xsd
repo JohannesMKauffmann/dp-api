@@ -1,6 +1,13 @@
 <?xml version="1.0"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
+<xsd:annotation>
+	<xsd:documentation xml:lang="en">
+	XSD data validation schema to describe emissions data.
+	All emission data is in million kilograms.
+	</xsd:documentation>
+</xsd:annotation>
+
 <xsd:element name="emissies">
 	<xsd:complexType>
 		<xsd:sequence minOccurs="0" maxOccurs="unbounded">
@@ -17,7 +24,7 @@
 								</xsd:restriction>
 							</xsd:simpleType>
 						</xsd:element>
-						<xsd:element name="periode">
+						<xsd:element name="jaar">
 							<xsd:simpleType>
 								<xsd:restriction base="xsd:integer">
 									<xsd:minInclusive value="2010" />
@@ -28,6 +35,7 @@
 							<xsd:simpleType>
 								<xsd:restriction base="xsd:decimal">
 									<xsd:fractionDigits value="2" />
+									<xsd:totalDigits value="5" />
 								</xsd:restriction>
 							</xsd:simpleType>
 						</xsd:element>

@@ -1,10 +1,10 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema",
 	"$id": "http://example.com/example.json",
-	"title": "Emissies JSON schema",
-	"description": "JSON data validation schema to describe emission data for a given bron and periode",
+	"title": "Emission JSON schema",
+	"description": "JSON data validation schema to describe emission data for a given bron and year. All emission data is in million kilograms.",
 	"type": "object",
-	"required": [ "bron", "periode", "nox", "co2" ],
+	"required": [ "bron", "jaar", "nox", "co2" ],
 	"properties": {
 		"bron": {
 			"type": "string",
@@ -15,7 +15,7 @@
 				"lpg"
 			]
 		},
-		"periode": {
+		"jaar": {
 			"type": "integer",
 			"minimum": 2010
 		},

@@ -1,8 +1,8 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema",
 	"$id": "http://example.com/example.json",
-	"title": "Emissies JSON schema",
-	"description": "JSON data validation schema to describe fuel station prices",
+	"title": "Fuel station prices JSON schema",
+	"description": "JSON data validation schema to describe fuel station prices. All prices are in euros/liter.",
 	"type": "object",
 	"required": [ "pompprijzen" ],
 	"properties": {
@@ -10,9 +10,9 @@
 			"type": "array",
 			"items": {
 				"type": "object",
-				"required": [ "periode", "euro95", "diesel", "lpg" ],
+				"required": [ "jaar", "euro95", "diesel", "lpg" ],
 				"properties": {
-					"periode": {
+					"jaar": {
 						"type": "integer",
 						"minimum": 2010
 					},

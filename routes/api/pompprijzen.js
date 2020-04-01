@@ -32,15 +32,15 @@ router.get('/', function(req, res) {
 	});
 });
 
-// Get data for a single periode
-router.get('/:periode', function(req, res) {
+// Get data for a single year
+router.get('/:jaar', function(req, res) {
 	const contentType = utils.checkAcceptHeader(req.headers.accept, res);
 	if (contentType === null) {
 		return;
 	}
 	// build query
-	let sql = `SELECT * FROM ${resource} WHERE periode = ?;`;
-	var inserts = [ req.params.periode ];
+	let sql = `SELECT * FROM ${resource} WHERE jaar = ?;`;
+	var inserts = [ req.params.jaar ];
 	sql = db.prepareQuery(sql, inserts);
 	// execute query and send proper response
 	db.conn.query(sql, function(err, results) {
@@ -92,11 +92,11 @@ router.post('/', function(req, res) {
 	}
 	// build query
 	let sql = `
-		INSERT INTO ${resource} (periode, euro95, diesel, lpg) \
+		INSERT INTO ${resource} (jaar, euro95, diesel, lpg) \
 		VALUES (?, ?, ?, ?);
 	`;
 	var inserts = [
-		data.periode,
+		data.jaar,
 		data.euro95,
 		data.diesel,
 		data.lpg
@@ -107,13 +107,13 @@ router.post('/', function(req, res) {
 		if (err && err.code === 'ER_DUP_ENTRY') {
 			message = utils.getMessage(
 				acceptHeader,
-				'There already exists an entry for the given periode!'
+				'There already exists an entry for the given jaar!'
 			);
 			// request couldn't be completed due to a conflict with the current state of resource.
 			utils.sendResponseWithBody(res, 409, acceptHeader, message);
 			return;
 		}
-		const resourcePath = utils.getResourcePath(resource, [data.periode]);
+		const resourcePath = utils.getResourcePath(resource, [data.jaar]);
 		utils.sendResponseWithLocation(res, 201, resourcePath);
 	});
 });
@@ -127,11 +127,11 @@ router.put('/', function(req, res) {
 		res,
 		400,
 		acceptHeader,
-		utils.getMessage(acceptHeader, `Please PUT at /${resource}{/periode}`)
+		utils.getMessage(acceptHeader, `Please PUT at /${resource}{/year}`)
 	);
 });
 
-router.put('/:periode', function(req, res) {
+router.put('/:jaar', function(req, res) {
 	// check request accept headers
 	const acceptHeader = utils.checkAcceptHeader(req.headers.accept, res);
 	if (acceptHeader === null) {
@@ -158,9 +158,9 @@ router.put('/:periode', function(req, res) {
 		data = utils.convertxml2json(data, innerElement);
 	}
 	// query DB to check wether to insert or update
-	let sql = `SELECT periode FROM ${resource} WHERE periode = ?`;
-	var inserts = [	data.periode ];
-	const resourcePath = utils.getResourcePath(resource, [data.periode]);
+	let sql = `SELECT jaar FROM ${resource} WHERE jaar = ?`;
+	var inserts = [	data.jaar ];
+	const resourcePath = utils.getResourcePath(resource, [data.jaar]);
 	sql = db.prepareQuery(sql, inserts);
 	db.conn.query(sql, function(err, results) {
 		if (err) {
@@ -168,12 +168,12 @@ router.put('/:periode', function(req, res) {
 		}
 		if (Object.keys(results).length) {
 			// there is already a row, which we now need to replace entirely
-			sql = `UPDATE ${resource} SET euro95 = ?, diesel = ?, lpg = ? WHERE periode = ?`;
+			sql = `UPDATE ${resource} SET euro95 = ?, diesel = ?, lpg = ? WHERE jaar = ?`;
 			inserts = [
 				data.euro95,
 				data.diesel,
 				data.lpg,
-				data.periode
+				data.jaar
 			];
 			sql = db.prepareQuery(sql, inserts);
 			db.conn.query(sql, function(err, results) {
@@ -186,7 +186,7 @@ router.put('/:periode', function(req, res) {
 		}
 		// there is no existing row, so we need to insert one
 		sql = `
-			INSERT INTO ${resource} (periode, euro95, diesel, lpg) \
+			INSERT INTO ${resource} (jaar, euro95, diesel, lpg) \
 			VALUES (?, ?, ?, ?);
 		`;
 		inserts[1] = data.euro95;
@@ -202,12 +202,12 @@ router.put('/:periode', function(req, res) {
 	});
 });
 
-router.delete('/:periode', function(req, res) {
+router.delete('/:jaar', function(req, res) {
 	// Accept headers or Content-Type headers don't matter, since we only send a 204 on succesful deletion
 	// or a 404 if the requested resource for deletion was not found
-	var periode = req.params.periode;
-	let sql = `DELETE from ${resource} WHERE periode = ?;`;
-	var inserts = [ periode];
+	var jaar = req.params.jaar;
+	let sql = `DELETE from ${resource} WHERE jaar = ?;`;
+	var inserts = [ jaar];
 	sql = db.prepareQuery(sql, inserts);
 	db.conn.query(sql, function(err, results) {
 		if (err) {

@@ -3,12 +3,12 @@
 
 <xsd:annotation>
 	<xsd:documentation xml:lang="en">
-	XSD data validation schema to describe fuel stations prices for a given year.
-	All prices are in euros/liter.
+	XSD data validation schema to describe fuel sales volume data for a given year.
+	All data is in million kilograms.
 	</xsd:documentation>
 </xsd:annotation>
 
-<xsd:element name="pompprijs">
+<xsd:element name="afzet">
 	<xsd:complexType>
 		<xsd:sequence>
 			<xsd:element name="jaar">
@@ -18,26 +18,23 @@
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:element>
+			<xsd:element name="lpg">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:integer">
+						<xsd:totalDigits value="3" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
 			<xsd:element name="euro95">
 				<xsd:simpleType>
-					<xsd:restriction base="xsd:decimal">
-						<xsd:fractionDigits value="3" />
+					<xsd:restriction base="xsd:integer">
 						<xsd:totalDigits value="4" />
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:element>
 			<xsd:element name="diesel">
 				<xsd:simpleType>
-					<xsd:restriction base="xsd:decimal">
-						<xsd:fractionDigits value="3" />
-						<xsd:totalDigits value="4" />
-					</xsd:restriction>
-				</xsd:simpleType>
-			</xsd:element>
-			<xsd:element name="lpg">
-				<xsd:simpleType>
-					<xsd:restriction base="xsd:decimal">
-						<xsd:fractionDigits value="3" />
+					<xsd:restriction base="xsd:integer">
 						<xsd:totalDigits value="4" />
 					</xsd:restriction>
 				</xsd:simpleType>
