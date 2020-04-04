@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 
@@ -12,6 +13,8 @@ app.use('/api/schemas/xml', express.static(xsdpath));
 app.use('/api/schemas/json', express.static(schemapath));
 
 app.use(bodyParser.text({type: '*/*'}));
+
+app.use(cors());
 
 app.use('/api/emissies', require('./routes/api/emissies'));
 app.use('/api/pompprijzen', require('./routes/api/pompprijzen'));
