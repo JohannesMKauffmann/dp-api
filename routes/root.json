@@ -117,24 +117,29 @@
 			"description": "Fuel price data",
 			"links": [
 				{
-					"href": "/pompprijzen",
-					"method": "GET"
+					"method": "GET",
+					"rel": "Get all fuel price data",
+					"href": "/pompprijzen"
 				},
 				{
-					"href": "/pompprijzen/{year}",
-					"method": "GET"
+					"method": "GET",
+					"rel": "Get all fuel price data for a given year",
+					"href": "/pompprijzen/{year}"
 				},
 				{
-					"href": "/pompprijzen",
-					"method": "POST"
+					"method": "POST",
+					"rel": "Add fuel price data for a given year",
+					"href": "/pompprijzen"
 				},
 				{
-					"href": "/pompprijzen/{year}",
-					"method": "PUT"
+					"method": "PUT",
+					"rel": "Add or update fuel price data for a given year",
+					"href": "/pompprijzen/{year}"
 				},
 				{
-					"href": "/pompprijzen/{year}",
-					"method": "DELETE"
+					"method": "DELETE",
+					"rel": "Remove fuel price data for a given year",
+					"href": "/pompprijzen/{year}"
 				},
 				{
 					"method": "GET",
