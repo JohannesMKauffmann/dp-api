@@ -111,3 +111,5 @@ schemas/xml/tempdata/
 schemas/json/tempdata/
 
 *.code-workspace
+
+*.txt

@@ -1,0 +1,162 @@
+{
+	"endpoints": [
+		{
+			"name": "Root endpoint",
+			"description": "You can query this endpoint to get an overview of available endpoints and their accepted operations",
+			"link": {
+				"method": "GET",
+				"rel": "self",
+				"href": "/"
+			}
+		},
+		{
+			"name": "brandstofafzet",
+			"description": "Fuel sales volume data",
+			"links": [
+				{
+					"method": "GET",
+					"rel": "Get all fuel sales volume data",
+					"href": "/brandstofafzet"
+				},
+				{
+					"method": "GET",
+					"rel": "Get all fuel sales volume data for a given year",
+					"href": "/brandstofafzet/{year}"
+				},
+				{
+					"method": "POST",
+					"rel": "Add fuel sales volume data for a given year",
+					"href": "/brandstofafzet"
+				},
+				{
+					"method": "PUT",
+					"rel": "Add or update fuel sales volume data for a given year",
+					"href": "/brandstofafzet/{year}"
+				},
+				{
+					"method": "DELETE",
+					"rel": "Remove fuel sales volume data for a given year",
+					"href": "/brandstofafzet/{year}"
+				},
+				{
+					"method": "GET",
+					"rel": "Get the fuel sales volume data XSD schema",
+					"href": "/schemas/xml/brandstofafzet.xsd"
+				},
+				{
+					"method": "GET",
+					"rel": "Get the fuel sales volume data JSON schema",
+					"href": "/schemas/json/brandstofafzet.schema.json"
+				},
+				{
+					"method": "GET",
+					"rel": "Get the fuel sales volume data XSD schema for a given year",
+					"href": "/schemas/xml/afzet.xsd"
+				},
+				{
+					"method": "GET",
+					"rel": "Get the fuel sales volume data JSON schema for a given year",
+					"href": "/schemas/xml/afzet.schema.json"
+				}
+			]
+		},
+		{
+			"name": "emissies",
+			"description": "emission data",
+			"links": [
+				{
+					"method": "GET",
+					"rel": "Get all emission data",
+					"href": "/emissies"
+					
+				},
+				{
+					"method": "GET",
+					"rel": "Get all emission data for a given bron and year",
+					"href": "/emissies/{bron}/{year}"
+				},
+				{
+					"method": "POST",
+					"rel": "Add emission data for a given bron and year",
+					"href": "/emissies"
+				},
+				{
+					"method": "PUT",
+					"rel": "Add or update emission data for a given bron and year",
+					"href": "/emissies/{bron}/{year}"
+				},
+				{
+					"method": "DELETE",
+					"rel": "Remove emission data for a given bron and year",
+					"href": "/emissies/{bron}/{year}"
+				},
+				{
+					"method": "GET",
+					"rel": "Get the emission data XSD schema",
+					"href": "/schemas/xml/emissies.xsd"
+				},
+				{
+					"method": "GET",
+					"rel": "Get the emission data JSON schema",
+					"href": "/schemas/json/emissies.schema.json"
+				},
+				{
+					"method": "GET",
+					"rel": "Get the emission data XSD schema for a given bron year",
+					"href": "/schemas/xml/emissie.xsd"
+				},
+				{
+					"method": "GET",
+					"rel": "Get the emission data JSON schema for a given bron and year",
+					"href": "/schemas/xml/emissie.schema.json"
+				}
+			]
+		},
+		{
+			"name": "pompprijzen",
+			"description": "Fuel price data",
+			"links": [
+				{
+					"href": "/pompprijzen",
+					"method": "GET"
+				},
+				{
+					"href": "/pompprijzen/{year}",
+					"method": "GET"
+				},
+				{
+					"href": "/pompprijzen",
+					"method": "POST"
+				},
+				{
+					"href": "/pompprijzen/{year}",
+					"method": "PUT"
+				},
+				{
+					"href": "/pompprijzen/{year}",
+					"method": "DELETE"
+				},
+				{
+					"method": "GET",
+					"rel": "Get the fuel price data XSD schema",
+					"href": "/schemas/xml/pompprijzen.xsd"
+				},
+				{
+					"method": "GET",
+					"rel": "Get the fuel price data JSON schema",
+					"href": "/schemas/json/pompprijzen.schema.json"
+				},
+				{
+					"method": "GET",
+					"rel": "Get the fuel price data XSD schema for a given year",
+					"href": "/schemas/xml/pompprijs.xsd"
+				},
+				{
+					"method": "GET",
+					"rel": "Get the fuel price data JSON schema for a given year",
+					"href": "/schemas/xml/pompprijs.schema.json"
+				}
+			]
+		}
+	]
+}
