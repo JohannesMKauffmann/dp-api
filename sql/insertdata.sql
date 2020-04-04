@@ -1,4 +1,4 @@
-USE `dataprocesing-johannes`
+USE `dataprocessing-johannes`
 
 load data local infile 'C:\\Users\\Johannes\\Documents\\Github\\dp-api\\data\\emissies.csv' into table emissies
 fields terminated by ';'
