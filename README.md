@@ -22,7 +22,7 @@ This will create a new database with alll the required tables. Now we need to in
 mysql -u root < "path/to/sql/insertdata.sql"
 ```
 ## Running the server
-The API server will run on port 4002 by default. It is possible to change the port number. To do so, open up config.json and change it yo something you prefer.
+The API server will run on port 4002 by default. It is possible to change the port number. To do so, open up config.json and change it to something of your preference.
 
 Assuming everything went accordingly, we can now run the server. Open a terminal window, cd to the root of this repository and execute
 ```
