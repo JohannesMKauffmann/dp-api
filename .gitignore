@@ -105,7 +105,6 @@ dist
 
 
 #-----------------------------------------------------------------
-data/
 
 schemas/xml/tempdata/
 schemas/json/tempdata/
